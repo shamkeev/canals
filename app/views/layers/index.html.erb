@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Layers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Type</th>
+      <th>Json</th>
+      <th>Infra project</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @layers.each do |layer| %>
+      <tr>
+        <td><%= layer.title %></td>
+        <td><%= layer.type %></td>
+        <td><%= layer.json %></td>
+        <td><%= layer.infra_project_id %></td>
+        <td><%= link_to 'Show', layer %></td>
+        <td><%= link_to 'Edit', edit_layer_path(layer) %></td>
+        <td><%= link_to 'Destroy', layer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Layer', new_layer_path %>

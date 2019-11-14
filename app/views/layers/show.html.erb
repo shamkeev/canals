@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @layer.title %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @layer.type %>
+</p>
+
+<p>
+  <strong>Json:</strong>
+  <%= @layer.json %>
+</p>
+
+<p>
+  <strong>Infra project:</strong>
+  <%= @layer.infra_project_id %>
+</p>
+
+<%= link_to 'Edit', edit_layer_path(@layer) %> |
+<%= link_to 'Back', layers_path %>

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Infra Projects</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Desc</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @infra_projects.each do |infra_project| %>
+      <tr>
+        <td><%= infra_project.title %></td>
+        <td><%= infra_project.status %></td>
+        <td><%= infra_project.start_date %></td>
+        <td><%= infra_project.end_date %></td>
+        <td><%= infra_project.desc %></td>
+        <td><%= link_to 'Show', infra_project %></td>
+        <td><%= link_to 'Edit', edit_infra_project_path(infra_project) %></td>
+        <td><%= link_to 'Destroy', infra_project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Infra Project', new_infra_project_path %>

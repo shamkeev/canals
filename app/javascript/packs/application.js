@@ -15,3 +15,8 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+//importing aplication.scss into js manifest
+import '../stylesheets/application'
+//importing specific bootstrap stuff:
+import './bootstrap_custom.js'

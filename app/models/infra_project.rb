@@ -1,0 +1,2 @@
+class InfraProject < ApplicationRecord
+end

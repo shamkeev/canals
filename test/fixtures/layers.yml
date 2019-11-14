@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  type: 
+  json: MyText
+  infra_project: one
+
+two:
+  title: MyString
+  type: 
+  json: MyText
+  infra_project: two
