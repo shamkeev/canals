@@ -10,6 +10,7 @@ class InfraProjectsController < ApplicationController
   # GET /infra_projects/1
   # GET /infra_projects/1.json
   def show
+    @layers = Layer.where(infra_project_id: @infra_project.id)
   end
 
   # GET /infra_projects/new
