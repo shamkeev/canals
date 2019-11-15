@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_054122) do
 
   create_table "layers", force: :cascade do |t|
     t.string "title"
-    t.string "type"
+    t.string "layer_type"
     t.text "json"
     t.integer "infra_project_id", null: false
     t.datetime "created_at", precision: 6, null: false
