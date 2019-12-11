@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  oblast: one
+  district: one
+  aiyl_aimak: one
+  name: MyString
+  soate: MyString
+
+two:
+  oblast: two
+  district: two
+  aiyl_aimak: two
+  name: MyString
+  soate: MyString

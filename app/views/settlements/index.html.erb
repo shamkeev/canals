@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Settlements</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Oblast</th>
+      <th>District</th>
+      <th>Aiyl aimak</th>
+      <th>Name</th>
+      <th>Soate</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @settlements.each do |settlement| %>
+      <tr>
+        <td><%= settlement.oblast_id %></td>
+        <td><%= settlement.district_id %></td>
+        <td><%= settlement.aiyl_aimak_id %></td>
+        <td><%= settlement.name %></td>
+        <td><%= settlement.soate %></td>
+        <td><%= link_to 'Show', settlement %></td>
+        <td><%= link_to 'Edit', edit_settlement_path(settlement) %></td>
+        <td><%= link_to 'Destroy', settlement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Settlement', new_settlement_path %>

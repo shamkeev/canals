@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Oblast:</strong>
+  <%= @settlement.oblast_id %>
+</p>
+
+<p>
+  <strong>District:</strong>
+  <%= @settlement.district_id %>
+</p>
+
+<p>
+  <strong>Aiyl aimak:</strong>
+  <%= @settlement.aiyl_aimak_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @settlement.name %>
+</p>
+
+<p>
+  <strong>Soate:</strong>
+  <%= @settlement.soate %>
+</p>
+
+<%= link_to 'Edit', edit_settlement_path(@settlement) %> |
+<%= link_to 'Back', settlements_path %>

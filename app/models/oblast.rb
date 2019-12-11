@@ -1,0 +1,2 @@
+class Oblast < ApplicationRecord
+end

@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Aiyl Aimaks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Oblast</th>
+      <th>District</th>
+      <th>Name</th>
+      <th>Soate</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @aiyl_aimaks.each do |aiyl_aimak| %>
+      <tr>
+        <td><%= aiyl_aimak.oblast_id %></td>
+        <td><%= aiyl_aimak.district_id %></td>
+        <td><%= aiyl_aimak.name %></td>
+        <td><%= aiyl_aimak.soate %></td>
+        <td><%= link_to 'Show', aiyl_aimak %></td>
+        <td><%= link_to 'Edit', edit_aiyl_aimak_path(aiyl_aimak) %></td>
+        <td><%= link_to 'Destroy', aiyl_aimak, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Aiyl Aimak', new_aiyl_aimak_path %>

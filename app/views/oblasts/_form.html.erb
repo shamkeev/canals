@@ -1,0 +1,27 @@
+<%= form_with(model: oblast, local: true) do |form| %>
+  <% if oblast.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(oblast.errors.count, "error") %> prohibited this oblast from being saved:</h2>
+
+      <ul>
+        <% oblast.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :soate %>
+    <%= form.text_field :soate %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
