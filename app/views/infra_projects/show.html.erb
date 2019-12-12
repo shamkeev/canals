@@ -2,39 +2,95 @@
 
 <div class="row" style="height: 100px">
   <div class="col-4">
-    <%= link_to 'Edit', edit_infra_project_path(@infra_project) %> |
+    <table class="table table-sm table-condensed">
+      <tbody>
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col" colspan="2"><%= @infra_project.title %></th>
+      </tr>
+      </thead>
+      <tr>
+        <th scope="row">Oblast</th>
+        <td><%= @infra_project.oblast.name %></td>
+      </tr>
+      <tr>
+        <th scope="row">District</th>
+        <td><%= @infra_project.district.name %></td>
+      </tr>
+      <tr>
+        <th scope="row">Aiyl Aimak</th>
+        <td>
+          <% unless @infra_project.aiyl_aimak.nil? %>
+            <%= @infra_project.aiyl_aimak.name %>
+           <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Village</th>
+        <td>
+          <% unless @infra_project.settlement.nil? %>
+            <%= @infra_project.settlement.name %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Owner</th>
+        <td><%= @infra_project.c_total%> KGS</td>
+      </tr>
+      <tr>
+        <th scope="row">Status</th>
+        <td><%= @infra_project.status %></td>
+      </tr>
+      <tr>
+        <th scope="row">Start date</th>
+        <td><%= @infra_project.start_date%></td>
+      </tr>
+      <tr>
+        <th scope="row">End date</th>
+        <td><%= @infra_project.end_date%></td>
+      </tr>
+      <tr>
+        <th scope="row">Total length</th>
+        <td><%= @infra_project.t_length%></td>
+      </tr>
+      <tr>
+        <th scope="row">Repaired length</th>
+        <td><%= @infra_project.r_length%></td>
+      </tr>
+      <tr>
+        <th scope="row"># of households</th>
+        <td><%= @infra_project.b_households%></td>
+      </tr>
+      <tr>
+        <th scope="row"># beneficiaries</th>
+        <td><%= @infra_project.b_total%></td>
+      </tr>
+      <tr>
+        <th scope="row"># women</th>
+        <td><%= @infra_project.b_women%></td>
+      </tr>
+      <tr>
+        <th scope="row">Project contribution</th>
+        <td><%= @infra_project.c_project%> KGS</td>
+      </tr>
+      <tr>
+        <th scope="row">Partners contribution</th>
+        <td><%= @infra_project.c_partners%> KGS</td>
+      </tr>
+      <tr>
+        <th scope="row">Total cost</th>
+        <td><%= @infra_project.c_total%> KGS</td>
+      </tr>
+      <tr>
+        <th scope="row">Partners</th>
+        <td><%= @infra_project.c_total%> KGS</td>
+      </tr>
+
+      </tbody>
+    </table>
+
     <%= link_to 'Back', infra_projects_path %>
-    <p>
-      <strong>Title:</strong>
-      <%= @infra_project.title %>
-    </p>
 
-    <p>
-      <strong>Status:</strong>
-      <%= @infra_project.status %>
-    </p>
-
-    <p>
-      <strong>Start date:</strong>
-      <%= @infra_project.start_date %>
-    </p>
-
-    <p>
-      <strong>End date:</strong>
-      <%= @infra_project.end_date %>
-    </p>
-
-    <p>
-      <strong>Desc:</strong>
-      <%= @infra_project.desc %>
-    </p>
-
-    <ul>
-      <% @layers.each do |layer| %>
-        <li><%= layer.title %></li>
-        <li><%= layer.json %></li>
-      <% end %>
-    </ul>
   </div>
   <div class="col-8">
     <div id="mapid" style="height: 700px"></div>
@@ -57,12 +113,15 @@
 
 
 
+
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
         id: 'mapbox.streets',
         accessToken: 'your.mapbox.access.token'
     }).addTo(mymap);
+
+
     L.geoJSON(jsonArray).addTo(mymap);
     mymap.fitBounds(L.geoJSON(jsonArray).getBounds());
 
