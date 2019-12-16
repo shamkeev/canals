@@ -98,7 +98,107 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
-    var mymap = L.map('mapid').setView([42.8746, 74.56], 13);
+
+    function getProperties(vtype) {
+
+        switch(vtype) {
+            case 'construction':
+                return {
+                    color:'#800026',
+                    weight: 7,
+                    fillColor: '#800026',
+                    opacity: 1,
+                    dashArray: '3',
+                    fillOpacity: 0.5,
+                    legend: 'Construction line'
+                }
+                break;
+            case 'canal':
+                return {
+                    color:'#0390fc',
+                    weight: 10,
+                    fillColor: '#0390fc',
+                    opacity: 1,
+                    dashArray: '0',
+                    fillOpacity: 0.5,
+                    legend: 'Canal'
+                }
+                break;
+            case 'land_total':
+                return {
+                    color:'#5da87c',
+                    weight: 1,
+                    fillColor: '#5da87c',
+                    opacity: 1,
+                    dashArray: '0',
+                    fillOpacity: 0.5,
+                    legend: 'Total irrigated land'
+                }
+                break;
+            case 'land_extended':
+                return {
+                    color:'#30d320',
+                    weight: 1,
+                    fillColor: '#30d320',
+                    opacity: 1,
+                    dashArray: '0',
+                    fillOpacity: 0.5,
+                    legend: 'Extended irrigated land'
+                }
+                break;
+            default:
+                return {
+                    color:'#FFEDA0',
+                    weight: 1,
+                    fillColor: '#FFEDA0',
+                    opacity: 1,
+                    dashArray: '1',
+                    fillOpacity: 0.5,
+                    legend: ''
+                }
+        }
+
+        /*return  vtype  = 'construction' ? '#800026' :
+                vtype = 'canal'  ? '#0390fc' :
+                vtype = 'river'  ? '#10b9fc' :
+                vtype = 'land_total' ? '#5da87c' :
+                vtype = 'land_extended'   ? '#30d320' :
+                                    '#FFEDA0';
+                                    */
+    }
+
+    function style(feature) {
+        return {
+            fillColor: getProperties(feature.properties.vtype).fillColor,
+            weight: getProperties(feature.properties.vtype).weight,
+            opacity: getProperties(feature.properties.vtype).opacity,
+            color: getProperties(feature.properties.vtype).color,
+            dashArray: getProperties(feature.properties.vtype).dashArray,
+            fillOpacity: getProperties(feature.properties.vtype).fillOpacity
+        };
+    }
+
+    var satellite = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.satellite',
+            accessToken: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA'
+        }),
+        streets   = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA'
+        });
+
+    var baseMaps = {
+        "Satellite": satellite,
+        "Streets": streets
+    };
+
+    var mymap = L.map('mapid',{
+        layers: [satellite]
+    });
 
     var jsonArray = [];
 
@@ -110,19 +210,61 @@
       jsonArray.push(JSON.parse(result.replace(/(&quot\;)/g,"\"")));
     <% end %>
 
+    // control that shows state info on hover
+    var info = L.control();
 
+    info.onAdd = function (mymap) {
+        this._div = L.DomUtil.create('div', 'mapinfo');
+        this.update();
+        return this._div;
+    };
 
+    info.update = function (vtype) {
+        this._div.innerHTML = '<h5>Layers info</h5>' +  (vtype ?
+            '<b>' + getProperties(vtype).legend + '</b><br />'
+            : 'Hover over a layer');
+    };
 
+    function highlightFeature(e) {
+        var layer = e.target;
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox.streets',
-        accessToken: 'your.mapbox.access.token'
+        layer.setStyle({
+            weight: 5,
+            color: 'rgba(255,255,0,0.84)',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties.vtype);
+    }
+    function zoomToFeature(e) {
+        mymap.fitBounds(e.target.getBounds());
+    }
+
+    function resetHighlight(e) {
+        geojs.resetStyle(e.target);
+        info.update();
+    }
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+    }
+
+    info.addTo(mymap);
+
+    L.control.layers(baseMaps).addTo(mymap);
+    var geojs = L.geoJSON(jsonArray, {
+        style: style,
+        onEachFeature: onEachFeature
     }).addTo(mymap);
 
-
-    L.geoJSON(jsonArray).addTo(mymap);
     mymap.fitBounds(L.geoJSON(jsonArray).getBounds());
 
 </script>
