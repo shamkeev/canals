@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_11_052324) do
+ActiveRecord::Schema.define(version: 2019_12_16_185808) do
 
   create_table "aiyl_aimaks", force: :cascade do |t|
     t.integer "oblast_id", null: false
@@ -91,6 +91,18 @@ ActiveRecord::Schema.define(version: 2019_12_11_052324) do
     t.index ["aiyl_aimak_id"], name: "index_settlements_on_aiyl_aimak_id"
     t.index ["district_id"], name: "index_settlements_on_district_id"
     t.index ["oblast_id"], name: "index_settlements_on_oblast_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "aiyl_aimaks", "districts"
