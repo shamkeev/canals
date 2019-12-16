@@ -23,13 +23,8 @@
         <td><%= settlement.name %></td>
         <td><%= settlement.soate %></td>
         <td><%= link_to 'Show', settlement %></td>
-        <td><%= link_to 'Edit', edit_settlement_path(settlement) %></td>
-        <td><%= link_to 'Destroy', settlement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Settlement', new_settlement_path %>

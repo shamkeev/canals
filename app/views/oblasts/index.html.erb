@@ -17,13 +17,9 @@
         <td><%= oblast.name %></td>
         <td><%= oblast.soate %></td>
         <td><%= link_to 'Show', oblast %></td>
-        <td><%= link_to 'Edit', edit_oblast_path(oblast) %></td>
-        <td><%= link_to 'Destroy', oblast, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
 
-<%= link_to 'New Oblast', new_oblast_path %>

@@ -9,12 +9,11 @@ Rails.application.routes.draw do
 
       root to: "aiyl_aimaks#index"
     end
-  resources :settlements
-  resources :aiyl_aimaks
-  resources :districts
-  resources :oblasts
-  resources :layers
-  resources :infra_projects
+  resources :settlements, only: [:index, :show]
+  resources :aiyl_aimaks, only: [:index, :show]
+  resources :districts, only: [:index, :show]
+  resources :oblasts, only: [:index, :show]
+  resources :infra_projects, only: [:index, :show]
 
   root to: 'infra_projects#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
