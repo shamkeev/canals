@@ -3,5 +3,5 @@ class Settlement < ApplicationRecord
   belongs_to :district
   belongs_to :aiyl_aimak
 
-  has_many :infra_projects
+  has_many :infra_projects, dependent: :destroy
 end

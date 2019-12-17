@@ -5,5 +5,5 @@ class InfraProject < ApplicationRecord
   belongs_to :district
   belongs_to :settlement, optional: true
 
-  has_many :layers
+  has_many :layers, dependent: :destroy
 end
