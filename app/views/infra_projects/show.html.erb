@@ -22,7 +22,7 @@
         <td>
           <% unless @infra_project.aiyl_aimak.nil? %>
             <%= @infra_project.aiyl_aimak.name %>
-           <% end %>
+          <% end %>
         </td>
       </tr>
       <tr>
@@ -93,7 +93,11 @@
 
   </div>
   <div class="col-8">
-    <div id="mapid" style="height: 700px"></div>
+    <% unless @layers.count == 0 %>
+      <div id="mapid" style="height: 700px"></div>
+    <% else %>
+      <h3>Can't show a map. No layers added yet. Please add layers in admin panel</h3>
+    <% end %>
   </div>
 </div>
 
@@ -116,7 +120,7 @@
             case 'canal':
                 return {
                     color:'#0390fc',
-                    weight: 10,
+                    weight: 2,
                     fillColor: '#0390fc',
                     opacity: 1,
                     dashArray: '0',
