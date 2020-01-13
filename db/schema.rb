@@ -10,11 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_11_052324) do
+ActiveRecord::Schema.define(version: 2019_12_16_185808) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "aiyl_aimaks", force: :cascade do |t|
-    t.integer "oblast_id", null: false
-    t.integer "district_id", null: false
+    t.bigint "oblast_id", null: false
+    t.bigint "district_id", null: false
     t.string "name"
     t.string "soate"
     t.datetime "created_at", precision: 6, null: false
@@ -24,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_052324) do
   end
 
   create_table "districts", force: :cascade do |t|
-    t.integer "oblast_id", null: false
+    t.bigint "oblast_id", null: false
     t.string "name"
     t.string "soate"
     t.datetime "created_at", precision: 6, null: false
@@ -40,10 +43,10 @@ ActiveRecord::Schema.define(version: 2019_12_11_052324) do
     t.text "desc"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "oblast_id"
-    t.integer "district_id"
-    t.integer "aiyl_aimak_id"
-    t.integer "settlement_id"
+    t.bigint "oblast_id"
+    t.bigint "district_id"
+    t.bigint "aiyl_aimak_id"
+    t.bigint "settlement_id"
     t.decimal "t_length"
     t.decimal "r_length"
     t.string "capacity"
@@ -66,7 +69,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_052324) do
     t.string "title"
     t.string "layer_type"
     t.text "json"
-    t.integer "infra_project_id", null: false
+    t.bigint "infra_project_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "zindex"
@@ -81,9 +84,9 @@ ActiveRecord::Schema.define(version: 2019_12_11_052324) do
   end
 
   create_table "settlements", force: :cascade do |t|
-    t.integer "oblast_id", null: false
-    t.integer "district_id", null: false
-    t.integer "aiyl_aimak_id", null: false
+    t.bigint "oblast_id", null: false
+    t.bigint "district_id", null: false
+    t.bigint "aiyl_aimak_id", null: false
     t.string "name"
     t.string "soate"
     t.datetime "created_at", precision: 6, null: false
@@ -91,6 +94,18 @@ ActiveRecord::Schema.define(version: 2019_12_11_052324) do
     t.index ["aiyl_aimak_id"], name: "index_settlements_on_aiyl_aimak_id"
     t.index ["district_id"], name: "index_settlements_on_district_id"
     t.index ["oblast_id"], name: "index_settlements_on_oblast_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "aiyl_aimaks", "districts"

@@ -5,5 +5,8 @@ class InfraProject < ApplicationRecord
   belongs_to :district
   belongs_to :settlement, optional: true
 
-  has_many :layers
+  has_many :layers, dependent: :destroy
+
+  validates :start_date, presence: true
+  validates :status, presence: true
 end

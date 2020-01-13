@@ -14,6 +14,7 @@
   </thead>
 
   <tbody>
+  <% unless @infra_projects.count == 0 %>
     <% @infra_projects.each do |infra_project| %>
       <tr>
         <td><%= link_to infra_project.title, infra_project %></td>
@@ -23,9 +24,13 @@
         <td><%= infra_project.district.name %></td>
       </tr>
     <% end %>
+  <% else %>
+    <tr>
+      <td colspan="5"><h3>No data entered yet</h3></td>
+    </tr>
+
+  <% end %>
   </tbody>
 </table>
 
-<br>
 
-<%= link_to 'New Infra Project', new_infra_project_path %>
