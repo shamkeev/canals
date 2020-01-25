@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'pages/home'
   devise_scope :user do
     get "/sign_in" => "devise/sessions#new" # custom path to login/sign_in
     get "/sign_up" => "devise/registrations#new", as: "new_user_registration" # custom path to sign_up/registration
@@ -24,6 +25,6 @@ Rails.application.routes.draw do
   resources :oblasts, only: [:index, :show]
   resources :infra_projects, only: [:index, :show]
 
-  root to: 'infra_projects#index'
+  root to: 'pages#home'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
