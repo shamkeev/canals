@@ -11,31 +11,39 @@
       </thead>
       <tr>
         <th scope="row">Oblast</th>
-        <td><%= @infra_project.oblast.name %></td>
+        <td><%= link_to @infra_project.oblast.name, @infra_project.oblast %></td>
       </tr>
       <tr>
         <th scope="row">District</th>
-        <td><%= @infra_project.district.name %></td>
+        <td><%= link_to @infra_project.district.name, @infra_project.district %></td>
       </tr>
+      <% unless @infra_project.aiyl_aimak.nil? %>
       <tr>
         <th scope="row">Aiyl Aimak</th>
         <td>
-          <% unless @infra_project.aiyl_aimak.nil? %>
+
             <%= @infra_project.aiyl_aimak.name %>
-          <% end %>
+
         </td>
       </tr>
+      <% end %>
+      <% unless @infra_project.settlement.nil? %>
+        <tr>
+          <th scope="row">Village</th>
+          <td>
+
+              <%= @infra_project.settlement.name %>
+
+          </td>
+        </tr>
+      <% end %>
       <tr>
-        <th scope="row">Village</th>
+        <th scope="row">Owners</th>
         <td>
-          <% unless @infra_project.settlement.nil? %>
-            <%= @infra_project.settlement.name %>
+          <% @infra_project.owners.each do |owner| %>
+            <%= owner.name %>
           <% end %>
         </td>
-      </tr>
-      <tr>
-        <th scope="row">Owner</th>
-        <td></td>
       </tr>
       <tr>
         <th scope="row">Status</th>
@@ -43,20 +51,32 @@
       </tr>
       <tr>
         <th scope="row">Start date</th>
-        <td><%= @infra_project.start_date%></td>
+        <td>
+          <% unless @infra_project.start_date.nil? %>
+            <%= @infra_project.start_date.year %>
+          <% end %>
+        </td>
       </tr>
       <tr>
         <th scope="row">End date</th>
-        <td><%= @infra_project.end_date%></td>
+        <td>
+          <% unless @infra_project.end_date.nil? %>
+            <%= @infra_project.end_date.year %>
+          <% end %>
+        </td>
       </tr>
-      <tr>
-        <th scope="row">Total length</th>
-        <td><%= @infra_project.t_length%></td>
-      </tr>
-      <tr>
-        <th scope="row">Repaired length</th>
-        <td><%= @infra_project.r_length%></td>
-      </tr>
+      <% unless @infra_project.t_length.nil? %>
+        <tr>
+          <th scope="row">Total length</th>
+          <td><%= ("%.0f" % @infra_project.t_length)%> m</td>
+        </tr>
+      <% end %>
+      <% unless @infra_project.r_length.nil? %>
+        <tr>
+          <th scope="row">Repaired length</th>
+          <td><%= ("%.0f" % @infra_project.r_length)%> m</td>
+        </tr>
+      <% end %>
       <tr>
         <th scope="row"># of households</th>
         <td><%= @infra_project.b_households%></td>
@@ -70,20 +90,36 @@
         <td><%= @infra_project.b_women%></td>
       </tr>
       <tr>
+        <th scope="row">Partners</th>
+        <td>
+          <% @infra_project.partners.each do |partner| %>
+            <%= partner.name %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
         <th scope="row">Project contribution</th>
-        <td><%= @infra_project.c_project%> KGS</td>
+        <td>
+          <% unless @infra_project.c_project.nil? %>
+            <%= ("%.2f" % @infra_project.c_project)%> KGS
+          <% end %>
+        </td>
       </tr>
       <tr>
         <th scope="row">Partners contribution</th>
-        <td><%= @infra_project.c_partners%> KGS</td>
+        <td>
+          <% unless @infra_project.c_partners.nil? %>
+            <%= ("%.2f" % @infra_project.c_partners)%> KGS
+          <% end %>
+        </td>
       </tr>
       <tr>
         <th scope="row">Total cost</th>
-        <td><%= @infra_project.c_total%> KGS</td>
-      </tr>
-      <tr>
-        <th scope="row">Partners</th>
-        <td></td>
+        <td>
+          <% unless @infra_project.c_total.nil? %>
+            <%= ("%.2f" % @infra_project.c_total)%> KGS
+          <% end %>
+        </td>
       </tr>
 
       </tbody>
@@ -260,6 +296,14 @@
             click: zoomToFeature
         });
     }
+    /*function onEachFeature(feature, layer) {
+        if (feature.geometry.type == "Point"){
+            layer.bindPopup(feature.properties.Type);
+        }else if(feature.geometry.type = "MultiLineString"){
+            layer.bindPopup(feature.properties.constr_type);
+        }
+
+    }*/
 
     info.addTo(mymap);
 
