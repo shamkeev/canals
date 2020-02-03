@@ -16,7 +16,8 @@ Rails.application.routes.draw do
       resources :layers
       resources :infra_projects
       resources :districts
-
+      resources :partners
+      resources :owners
       root to: "aiyl_aimaks#index"
     end
   resources :settlements, only: [:index, :show]

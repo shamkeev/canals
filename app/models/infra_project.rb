@@ -7,6 +7,9 @@ class InfraProject < ApplicationRecord
 
   has_many :layers, dependent: :destroy
 
+  has_and_belongs_to_many :owners
+  has_and_belongs_to_many :partners
+
   validates :start_date, presence: true
   validates :status, presence: true
 end

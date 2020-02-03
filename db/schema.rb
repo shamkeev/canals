@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_16_185808) do
+ActiveRecord::Schema.define(version: 2020_02_03_104112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,20 @@ ActiveRecord::Schema.define(version: 2019_12_16_185808) do
     t.index ["settlement_id"], name: "index_infra_projects_on_settlement_id"
   end
 
+  create_table "infra_projects_owners", id: false, force: :cascade do |t|
+    t.bigint "infra_project_id"
+    t.bigint "owner_id"
+    t.index ["infra_project_id"], name: "index_infra_projects_owners_on_infra_project_id"
+    t.index ["owner_id"], name: "index_infra_projects_owners_on_owner_id"
+  end
+
+  create_table "infra_projects_partners", id: false, force: :cascade do |t|
+    t.bigint "infra_project_id"
+    t.bigint "partner_id"
+    t.index ["infra_project_id"], name: "index_infra_projects_partners_on_infra_project_id"
+    t.index ["partner_id"], name: "index_infra_projects_partners_on_partner_id"
+  end
+
   create_table "layers", force: :cascade do |t|
     t.string "title"
     t.string "layer_type"
@@ -79,6 +93,20 @@ ActiveRecord::Schema.define(version: 2019_12_16_185808) do
   create_table "oblasts", force: :cascade do |t|
     t.string "name"
     t.string "soate"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "owners", force: :cascade do |t|
+    t.string "name"
+    t.text "desc"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "partners", force: :cascade do |t|
+    t.string "name"
+    t.text "desc"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

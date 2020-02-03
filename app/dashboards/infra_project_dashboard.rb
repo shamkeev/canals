@@ -20,6 +20,8 @@ class InfraProjectDashboard < Administrate::BaseDashboard
     district: Field::BelongsTo,
     aiyl_aimak: Field::BelongsTo,
     settlement: Field::BelongsTo,
+    owners: Field::HasMany,
+    partners: Field::HasMany,
     layers: Field::HasMany,
     t_length: Field::Number.with_options(searchable: false),
     r_length: Field::Number.with_options(searchable: false),
@@ -71,6 +73,8 @@ class InfraProjectDashboard < Administrate::BaseDashboard
   c_project
   c_partners
   c_total
+  partners
+  owners
   layers
   desc
    created_at
@@ -90,6 +94,8 @@ class InfraProjectDashboard < Administrate::BaseDashboard
   district
   aiyl_aimak
   settlement
+  owners
+  partners
   t_length
   r_length
   capacity
