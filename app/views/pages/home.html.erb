@@ -1,8 +1,83 @@
+<div class="row">
+  <div class="col-3">
+    <div>
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Overview</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">Oblasts</th>
+          <td><%= InfraProject.distinct.count(:oblast_id) %></td>
+        </tr>
+        <tr>
+          <th scope="row">Districts</th>
+          <td><%= InfraProject.distinct.count(:district_id) %></td>
+        </tr>
+        <tr>
+          <th scope="row">Infra Projects</th>
+          <td><%= InfraProject.count() %></td>
+        </tr>
+        <tr>
+          <th scope="row">Partners</th>
+          <td><%= Partner.count() %></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      Total beneficiaries: <%= number_with_delimiter(InfraProject.sum(:b_total), delimiter:",") %>
+      <canvas id="pieChartBeneficiaries" style="max-width: 500px;"></canvas>
+    </div>
+    <div>
+      Total contribution: <%= number_with_delimiter(InfraProject.sum(:c_total), delimeter: ",") %> KGS
+      <canvas id="pieChartCost" style="max-width: 500px;"></canvas>
+    </div>
+  </div>
+  <div class="col-9">
+    <div id="mapid" style="height: 700px"></div>
+  </div>
+</div>
 
-<div id="mapid" style="height: 700px"></div>
 
 
 
+<script>
+    var ctxBeneficiaries = document.getElementById("pieChartBeneficiaries").getContext('2d');
+    var beneficiariesChart = new Chart(ctxBeneficiaries, {
+        type: 'pie',
+        data: {
+            labels: ["Female", "Male"],
+            datasets: [{
+                data: [<%= InfraProject.sum(:b_women) %>, <%= InfraProject.sum(:b_total) - InfraProject.sum(:b_women) %>],
+                backgroundColor: ["#f7897c", "#46bfbd"],
+                hoverBackgroundColor: ["#FF5A5E", "#3a9ca1"]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    var ctxCost = document.getElementById("pieChartCost").getContext('2d');
+    var costChart = new Chart(ctxCost, {
+        type: 'pie',
+        data: {
+            labels: ["Project", "Partners"],
+            datasets: [{
+                data: [<%= InfraProject.sum(:c_project) %>, <%= InfraProject.sum(:c_partners)%>],
+                backgroundColor: ["#5da87c", "#10b9fc"],
+                hoverBackgroundColor: ["#0d8a4c", "#1d95ec"]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
 <script type="text/javascript" charset="utf-8">
 
     function getProperties(vtype) {
