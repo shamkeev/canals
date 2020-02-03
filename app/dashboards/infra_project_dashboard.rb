@@ -31,7 +31,6 @@ class InfraProjectDashboard < Administrate::BaseDashboard
     b_households: Field::Number,
     b_total: Field::Number,
     b_women: Field::Number,
-    cost_total: Field::Number.with_options(searchable: false),
     c_project: Field::Number.with_options(searchable: false),
     c_partners: Field::Number.with_options(searchable: false),
     c_total: Field::Number.with_options(searchable: false),
@@ -69,7 +68,6 @@ class InfraProjectDashboard < Administrate::BaseDashboard
   b_households
   b_total
   b_women
-  cost_total
   c_project
   c_partners
   c_total
@@ -104,7 +102,6 @@ class InfraProjectDashboard < Administrate::BaseDashboard
   b_households
   b_total
   b_women
-  cost_total
   c_project
   c_partners
   c_total
