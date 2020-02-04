@@ -20,8 +20,8 @@
         <td><%= link_to infra_project.title, infra_project %></td>
         <td><%= infra_project.status %></td>
         <td><%= infra_project.start_date.year %></td>
-        <td><%= infra_project.oblast.name %></td>
-        <td><%= infra_project.district.name %></td>
+        <td><%= link_to infra_project.oblast.name, infra_project.oblast %></td>
+        <td><%= link_to infra_project.district.name, infra_project.district %></td>
       </tr>
     <% end %>
   <% else %>
