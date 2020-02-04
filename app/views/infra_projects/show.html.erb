@@ -77,6 +77,18 @@
           <td><%= ("%.0f" % @infra_project.r_length)%> m</td>
         </tr>
       <% end %>
+      <% unless @infra_project.t_area.nil? %>
+        <tr>
+          <th scope="row">Total area</th>
+          <td><%= ("%.0f" % @infra_project.t_area)%> ha</td>
+        </tr>
+      <% end %>
+      <% unless @infra_project.r_area.nil? %>
+        <tr>
+          <th scope="row">Repaired area</th>
+          <td><%= ("%.0f" % @infra_project.r_area)%> ha</td>
+        </tr>
+      <% end %>
       <tr>
         <th scope="row"># of households</th>
         <td><%= @infra_project.b_households%></td>
