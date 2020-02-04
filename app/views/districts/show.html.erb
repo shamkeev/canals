@@ -1,18 +1,232 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Oblast:</strong>
-  <%= @district.oblast_id %>
-</p>
+<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @district.name %>
-</p>
+<div class="row">
+  <div class="col-4">
+    <table class="table">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Infra projects: <%= @infras.count %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <thead class="thead-light">
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Year</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @infras.each do |infra| %>
+        <tr>
+          <th scope="row"><%= link_to infra.title, infra %></th>
+          <td><%= infra.start_date.year %></td>
+        </tr>
+      <% end %>
 
-<p>
-  <strong>Soate:</strong>
-  <%= @district.soate %>
-</p>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-8">
+    <div id="mapid" style="height: 700px"></div>
+  </div>
+</div>
+<%= link_to 'Back', oblasts_path %>
+
+
+
+<script type="text/javascript" charset="utf-8">
+
+    function getProperties(vtype) {
+
+        switch(vtype) {
+            case 'construction':
+                return {
+                    color:'#800026',
+                    weight: 7,
+                    fillColor: '#800026',
+                    opacity: 1,
+                    dashArray: '3',
+                    fillOpacity: 0.5,
+                    legend: 'Construction line'
+                }
+                break;
+            case 'canal':
+                return {
+                    color:'#0390fc',
+                    weight: 2,
+                    fillColor: '#0390fc',
+                    opacity: 1,
+                    dashArray: '0',
+                    fillOpacity: 0.5,
+                    legend: 'Canal'
+                }
+                break;
+            case 'land_total':
+                return {
+                    color:'#5da87c',
+                    weight: 1,
+                    fillColor: '#5da87c',
+                    opacity: 1,
+                    dashArray: '0',
+                    fillOpacity: 0.5,
+                    legend: 'Total irrigated land'
+                }
+                break;
+            case 'land_extended':
+                return {
+                    color:'#30d320',
+                    weight: 1,
+                    fillColor: '#30d320',
+                    opacity: 1,
+                    dashArray: '0',
+                    fillOpacity: 0.5,
+                    legend: 'Extended irrigated land'
+                }
+                break;
+            default:
+                return {
+                    color:'#FFEDA0',
+                    weight: 1,
+                    fillColor: '#FFEDA0',
+                    opacity: 1,
+                    dashArray: '1',
+                    fillOpacity: 0.5,
+                    legend: ''
+                }
+        }
+
+        /*return  vtype  = 'construction' ? '#800026' :
+                vtype = 'canal'  ? '#0390fc' :
+                vtype = 'river'  ? '#10b9fc' :
+                vtype = 'land_total' ? '#5da87c' :
+                vtype = 'land_extended'   ? '#30d320' :
+                                    '#FFEDA0';
+                                    */
+    }
+
+    function style(feature) {
+        return {
+            fillColor: getProperties(feature.properties.vtype).fillColor,
+            weight: getProperties(feature.properties.vtype).weight,
+            opacity: getProperties(feature.properties.vtype).opacity,
+            color: getProperties(feature.properties.vtype).color,
+            dashArray: getProperties(feature.properties.vtype).dashArray,
+            fillOpacity: getProperties(feature.properties.vtype).fillOpacity
+        };
+    }
+
+    var satellite = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.satellite',
+            accessToken: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA'
+        }),
+        streets   = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZGFuY2hpa2ciLCJhIjoiY2sydWJjbHE2MHlxODNncHZycXRuOTB2OCJ9.4uXwJG8uQWH2SFYtBRlCLA'
+        });
+
+    var baseMaps = {
+        "Satellite": satellite,
+        "Streets": streets
+    };
+
+    var mymap = L.map('mapid',{
+        layers: [streets]
+    });
+
+    var jsonArray = [];
+    var pointsArray = [];
+    var markers = L.markerClusterGroup();
+
+
+    //var jsons = '{"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"EPSG:4326"}},"features":[{"type":"Feature","id":0,"geometry":{"type":"MultiLineString","coordinates":[[[72.327133388095803,40.274057602427277],[72.327032261151018,40.274010013076506],[72.3268954423434,40.273992167147],[72.326788366754798,40.274027859001244],[72.326746726248075,40.274069499931088],[72.326716983029002,40.27417062691547],[72.326734828960454,40.274349086213086],[72.326764572179513,40.274468059273474],[72.326770520823288,40.274634621754572],[72.3267407776043,40.274813081198332]],[[72.341957430931814,40.274099243338803],[72.341665946486728,40.273974321212741],[72.341166259508242,40.273676888739359],[72.340785546304332,40.273421096972186],[72.340488113215471,40.273254534243513],[72.340386986270616,40.273218842666509],[72.340345345763993,40.273218842666509],[72.340315602544905,40.273224791149708],[72.340279910682057,40.273266431888608]],[[72.354782725853866,40.274497803191174],[72.354580471065972,40.27445616252507],[72.354407960395449,40.274420470211453],[72.354312782094468,40.274396676010682],[72.354152167813254,40.274408572769389],[72.353813095115981,40.274432367651421],[72.353402637794701,40.274474008332177],[72.353093308316474,40.27449185413456],[72.352456802530327,40.274545392198668],[72.3521950613043,40.274545392198668],[72.351326558409554,40.274545392198668]],[[72.359139999647908,40.275099999911419],[72.358619606502188,40.275241384546291],[72.358351916632316,40.275312768288089],[72.35823889239991,40.275306819303132],[72.358000946647479,40.275271127438515],[72.357025367265734,40.275039130201918],[72.355651228748656,40.274717902841246]],[[72.335895753904779,40.275669687237588],[72.335265196762464,40.275532868712425],[72.33440264161321,40.275336562851948],[72.333980287902605,40.275259230146126],[72.333801827689896,40.275223538256377],[72.333647162950811,40.275223538256377],[72.333611471087949,40.275259230146126]],[[72.331737645592369,40.275949273757107],[72.33138072606539,40.275836249500301],[72.331261753189125,40.275764865625703],[72.330773963498302,40.275479330744673],[72.330315917924821,40.275199743652756],[72.330155303643622,40.275110514157326],[72.330042279411217,40.275051027533138],[72.329899511959738,40.275051027533138],[72.329019111777328,40.275086719513929],[72.328923932578007,40.275051027533138]]]},"properties":{"FID":0,"OBJECTID":52,"constr_typ":"Repair of canal with ready mixed concrete","infrastruc":"Irrigation","project_co":"PRJ049","Shape_Leng":1808.8862488100001}}]}';
+    //var parsed = JSON.parse(jsons);
+    //jsonArray.push(parsed);
+
+
+    <% @infras.each do |i| %>
+    var i_layers = [];
+
+    <% if i.layers.count > 0 %>
+    <% i.layers.each do |l| %>
+    var lres = '<%= l.json %>';
+    i_layers.push(JSON.parse(lres.replace(/(&quot\;)/g,"\"")));
+    <% end %>
+
+    var bounds = L.geoJSON(i_layers).getBounds();
+    markers.addLayer(L.circleMarker(bounds.getCenter()).bindPopup('<%= link_to i.title, i %><br/> Status: <%= i.status %> <br/> Year: <%= i.start_date.year %>' ));
+
+    <% end %>
+    <% end %>
+
+    mymap.addLayer(markers);
+
+
+
+    // control that shows state info on hover
+    var info = L.control();
+
+    info.onAdd = function (mymap) {
+        this._div = L.DomUtil.create('div', 'mapinfo');
+        this.update();
+        return this._div;
+    };
+
+    info.update = function (vtype) {
+        this._div.innerHTML = '<h5>Layers info</h5>' +  (vtype ?
+            '<b>' + getProperties(vtype).legend + '</b><br />'
+            : 'Hover over a layer');
+    };
+
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: 'rgba(255,255,0,0.84)',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties.vtype);
+    }
+    function zoomToFeature(e) {
+        mymap.fitBounds(e.target.getBounds());
+    }
+
+    function resetHighlight(e) {
+        geojs.resetStyle(e.target);
+        info.update();
+    }
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+    }
+
+    //info.addTo(mymap);
+
+    /* L.control.layers(baseMaps).addTo(mymap);
+     var geojs = L.geoJSON(jsonArray, {
+         style: style,
+         onEachFeature: onEachFeature
+     }).addTo(mymap);
+     */
+
+    L.control.layers(baseMaps).addTo(mymap)
+    mymap.fitBounds(markers.getBounds())
+
+</script>
 
 <%= link_to 'Back', districts_path %>

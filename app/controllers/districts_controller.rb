@@ -10,6 +10,7 @@ class DistrictsController < ApplicationController
   # GET /districts/1
   # GET /districts/1.json
   def show
+    @infras = InfraProject.where(district: @district)
   end
 
   # GET /districts/new
