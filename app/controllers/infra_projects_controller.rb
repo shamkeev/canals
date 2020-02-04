@@ -4,7 +4,7 @@ class InfraProjectsController < ApplicationController
   # GET /infra_projects
   # GET /infra_projects.json
   def index
-    @infra_projects = InfraProject.all
+    @infra_projects = InfraProject.all.page(params[:page])
   end
 
   # GET /infra_projects/1

@@ -10,7 +10,7 @@ class OblastsController < ApplicationController
   # GET /oblasts/1
   # GET /oblasts/1.json
   def show
-    @infras = InfraProject.where(oblast: @oblast)
+    @infras = InfraProject.where(oblast: @oblast).page(params[:page])
   end
 
   # GET /oblasts/new

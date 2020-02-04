@@ -12,4 +12,6 @@ class InfraProject < ApplicationRecord
 
   validates :start_date, presence: true
   validates :status, presence: true
+
+  paginates_per 10
 end

@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-4">
-    <table class="table">
+    <table class="table table-sm table-hover">
       <thead class="thead-dark">
       <tr>
         <th scope="col">Infra projects: <%= @infras.count %></th>
@@ -15,6 +15,7 @@
         <th scope="col">Year</th>
       </tr>
       </thead>
+      <%= paginate @infras %>
       <tbody>
       <% @infras.each do |infra| %>
         <tr>
